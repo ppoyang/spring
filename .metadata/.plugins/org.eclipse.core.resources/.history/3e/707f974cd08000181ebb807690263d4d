@@ -1,0 +1,17 @@
+package s02;
+
+public class MyCal {
+	
+	Calculator cal;
+	private int FirstNum;
+	private int secondNum;
+	
+	public MyCal() {
+		
+	}
+	
+	public void add() {
+		
+	}
+	
+}

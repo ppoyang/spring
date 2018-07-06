@@ -1,0 +1,15 @@
+package spring_0706;
+
+public class Calculator {
+	
+	private int firstNum;
+	private int secondNum;
+	
+	
+	
+	
+	public void addition() {
+		System.out.println("addtion");
+	}
+
+}
