@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="student" class="com.wind.s07.Student"  scope="singleton"> <!-- default는 singleton -->
+		<property name="name" value="아아아"></property>
+		<property name="age" value="34"></property>
+	</bean>
+	
+	<bean id="act" class="com.wind.s07.Student"  scope="prototype">
+		<property name="name" value="엠마스톤"></property>
+		<property name="age" value="21"></property>
+	</bean>
+
+</beans>
