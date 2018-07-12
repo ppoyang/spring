@@ -23,6 +23,14 @@ public class MainClass {
 			e.printStackTrace();
 		}
 		
+		GenericXmlApplicationContext gCtx =( GenericXmlApplicationContext)ctx;
+		gCtx.load("applicationCTX.xml");
+		gCtx.refresh();
+		
+		AdminConnection adminConnection = gCtx.getBean("adminConnection",AdminConnection.class); //spring에서 adminConnection Bean이 만드렁짐
+		System.out.println(adminConnection.getAdminId());
+		
+		gCtx.close();
 		
 	}
 

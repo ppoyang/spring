@@ -4,9 +4,10 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
-
+                                                                                   //처음 만들때,                                         ,환경변수
 public class AdminConnection implements InitializingBean, DisposableBean, EnvironmentAware {
 	
+	//Environment 객체 사용하여 스프링 빈 생성.
 	private Environment env;
 	private String adminId;
 	private String adminPw;
