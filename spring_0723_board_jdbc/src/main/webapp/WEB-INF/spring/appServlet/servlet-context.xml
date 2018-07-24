@@ -23,6 +23,15 @@
 	
 	<context:component-scan base-package="com.wind.web" />
 	
+	<beans:bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 	<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+ 	<beans:property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+ 	<beans:property name="username" value="scott" />
+ 	<beans:property name="password" value="tiger" />
+</beans:bean>
+ 	<!-- root-context.xml 에 쓸때는 beans:을 빼고 쓰면된다. -->
 	
-	
+	<beans:bean name="template" class="org.springframework.jdbc.core.JdbcTemplate">
+	<beans:property name="dataSource" ref="dataSource"/>
+	</beans:bean>
 </beans:beans>

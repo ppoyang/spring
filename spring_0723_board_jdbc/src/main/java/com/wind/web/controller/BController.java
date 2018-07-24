@@ -2,6 +2,8 @@ package com.wind.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +17,21 @@ import com.wind.web.service.BReplyService;
 import com.wind.web.service.BReplyViewService;
 import com.wind.web.service.BService;
 import com.wind.web.service.BWriteService;
+import com.wind.web.util.Constant;
 
 @Controller
 public class BController {
 	
 	BService service = null;
+	/*JDBC추가*/
+	private JdbcTemplate template;
+	
+	@Autowired
+	public void setTemplate(JdbcTemplate template) {
+		this.template = template;
+		Constant.template = this.template;
+	}	
+	/*JDBC추가*/
 	
 	@RequestMapping("/list")
 	public String list(Model model) {
