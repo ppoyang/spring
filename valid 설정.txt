@@ -44,3 +44,16 @@ Servers - context.xml
 
 
 oracle
+
+
+
+spring JDBC
+
+pom.xml - spring 프레임워크 버전과 맞는 것을 mvnrepository spring jdbc 검색해서 들어가서 복사..
+
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>3.1.1.RELEASE</version>
+</dependency>

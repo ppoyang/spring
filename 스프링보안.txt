@@ -1,0 +1,60 @@
+mvnrepository 
+spring security core , taglib, web, config 3.2.5 버전 이상..
+복사해서 pom.xml에 붙여넣기
+<properties>
+		<java-version>1.6</java-version>
+		<org.springframework-version>3.2.5.RELEASE</org.springframework-version>
+		<org.aspectj-version>1.6.10</org.aspectj-version>
+		<org.slf4j-version>1.6.6</org.slf4j-version>
+	</properties>
+
+여기 버전 3.2.5로..
+
+
+properties -> project facets -> java 1.7로
+
+
+src-spring-spring bean definition file 생성, security 선택 (beans, context,security 선택)
+
+web.xml에서
+<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+		/WEB-INF/spring/root-context.xml
+		/WEB-INF/spring/security-context.xml
+		</param-value>
+	</context-param>
+
+수정
+
+
+
+//인터셉터는 admin인지 걸러줌
+
+web.xml
+
+<!-- 	Security Setting -->
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+<!-- 	UTF-8 Encoding Setting -->
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>	
+
+추가
