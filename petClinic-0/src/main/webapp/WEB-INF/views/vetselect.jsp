@@ -9,9 +9,13 @@
 </head>
 <body>
 
-<c:forEach items="${vetselect2 }" var="dto2">
+<%-- <c:forEach items="${vetselect2 }" var="dto2">
 	${dto2.last_name }, ${dto2.first_name } <br/>
-</c:forEach>
+</c:forEach> --%>
+
+<c:forEach items="${vetselect3 }" var="dto3">
+	${dto3.last_name }, ${dto3.first_name } <br/>
+</c:forEach> 
 
 
 </body>

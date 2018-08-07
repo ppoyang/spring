@@ -24,5 +24,11 @@ vetslist.jsp
    
 </table>
 
+<p><a href="list">freeboard</a></p>
+<p><a href="vetslist">펫클리닛</a></p>
+<p><a href="vetselect_view">수의사 전공별 열람</a></p>
+<p><a href="vet_add_view">수의사등록</a></p>
+
+
 </body>
 </html>
