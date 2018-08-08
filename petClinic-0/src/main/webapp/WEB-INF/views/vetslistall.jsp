@@ -5,19 +5,32 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>vetslist.jsp</title>
+<title>vetslistall.jsp</title>
 </head>
 <body>
 
-vetslist.jsp
+
 
 <table width="600" cellpadding="0" cellspacing="0" border="1">
+   
+    <tr>
+         <td width="70">id</td>
+         <td>name</td>
+         <td width="350">part</td>
+      </tr>
    <c:forEach items="${vetslist}" var="dto">
       <tr>
          <td></td>
          <td>${dto.id }</td>
-         <td>${dto.first_name }</td>
-         <td>${dto.last_name }</td>
+         <td>${dto.first_name }, ${dto.last_name }</td>
+         <td>
+         	<c:forEach items="${vetspeslist}" var="vsdto" varStatus="status">
+         		<c:if test="${vsdto.vet_id == dto.id}"> 
+         		${status}. ${specialtieslist[vsdto.specialty_id-1].name}
+         		
+         		</c:if>
+         	</c:forEach>
+         </td>
       </tr>
       
    </c:forEach>

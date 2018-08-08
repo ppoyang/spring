@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.wind.web.dao.IDao;
 import com.wind.web.dao.SpecialtiesDao;
 import com.wind.web.dao.VetsDao;
+import com.wind.web.dao.VetspecialtiesDao;
 import com.wind.web.dto.VetsDto;
 import com.wind.web.dto.VetspecialtiesDto;
 
@@ -29,6 +30,27 @@ public class VetsController {
 		VetsDao dao = sqlSession.getMapper(VetsDao.class);
 		model.addAttribute("vetslist", dao.vetslistDao());
 		return "vetslist";
+	}
+	
+	@RequestMapping("/vetslistall")
+	public String vetslistall(Model model) { 
+		
+		// model :
+		// vetlist - 의사정보 (id, first_name, last_name)
+		//vetspeslist -의사 id와 전공 id 매핑 (vet_id, sepcialties_id)
+		//specialtieslsit - 전공(id,name)
+		
+		VetsDao dao = sqlSession.getMapper(VetsDao.class);
+		VetspecialtiesDao vsdao = sqlSession.getMapper(VetspecialtiesDao.class);
+		SpecialtiesDao sdao = sqlSession.getMapper(SpecialtiesDao.class);
+		
+		model.addAttribute("vetlist", dao.vetslistDao());
+		model.addAttribute("vetspeclist", vsdao.vetspeslistDao());
+		model.addAttribute("specialtieslist", sdao.specialtiesDao());
+		
+		
+		
+		return "vetslistall";
 	}
 	
 	@RequestMapping("/vetselect_view")
@@ -74,9 +96,50 @@ public class VetsController {
 		return "redirect:vetslist";
 	}
 	
+	@RequestMapping("/vet_add_major")
+	public String vet_add_major(Model model) {
+		VetsDao dao1 = sqlSession.getMapper(VetsDao.class);
+		SpecialtiesDao dao2 = sqlSession.getMapper(SpecialtiesDao.class);
+		
+		model.addAttribute("vetslist", dao1.vetslistDao());
+		model.addAttribute("specialtieslist", dao2.specialtiesDao());
+		
+		return "vet_add_major";
+	}
+	
+	@RequestMapping("/vet_add_major_mod")
+	public String vet_add_major_mod(HttpServletRequest request) {
+		
+		String vet_id = request.getParameter("vet_id");
+		String[] major = request.getParameterValues("major");
+		
+		del_vetspec(vet_id);
+		
+		for(int i=0; i<major.length; i++ ) {
+			add_vetspec(vet_id, major[i]);
+		}
+		
+		
+		return "redirect:vetslist";
+	}
+	
 	@ExceptionHandler
 	public String handlerException(Exception e) {
 		return "viewerror";
+	}
+	
+	
+	public void del_vetspec(String vet_id) {
+		//VetspecialtiesDao 만들고
+		//vetspec_deleteDao(vet_id) 생성
+		VetspecialtiesDao dao = sqlSession.getMapper(VetspecialtiesDao.class);
+		dao.vetspec_deleteDao(vet_id);
+	}
+	
+	public void add_vetspec(String vet_id, String specialty_id) {
+	
+		VetspecialtiesDao dao = sqlSession.getMapper(VetspecialtiesDao.class);
+		dao.add_vetspec(vet_id, specialty_id);
 	}
 
 }

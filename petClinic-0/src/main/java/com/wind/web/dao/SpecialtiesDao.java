@@ -10,5 +10,6 @@ public interface SpecialtiesDao {
 
 	
 	public ArrayList<SpecialtiesDto> vetselect_viewDao();
+	public ArrayList<SpecialtiesDto> specialtiesDao();
 	
 }

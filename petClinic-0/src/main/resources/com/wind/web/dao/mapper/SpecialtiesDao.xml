@@ -9,8 +9,14 @@
 	
 	
 	<select id="vetselect_viewDao" resultType="com.wind.web.dto.SpecialtiesDto">
-		SELECT id, name FROM specialties
+		SELECT id, name FROM specialties ORDER BY id ASC
 	</select>
+	
+	<select id="specialtiesDao" resultType="com.wind.web.dto.SpecialtiesDto">
+		SELECT * FROM specialties ORDER BY id ASC
+	</select>
+	
+	
 	
 	
 	

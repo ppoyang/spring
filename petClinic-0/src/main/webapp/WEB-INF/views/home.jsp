@@ -12,6 +12,9 @@
 	Hello world!  
 </h1>
 
-<P>  The time on the server is ${serverTime}. </P>
+
+<a href="list">freeboard</a>
+<a href="vetslist">pet-clinic</a>
+
 </body>
 </html>
