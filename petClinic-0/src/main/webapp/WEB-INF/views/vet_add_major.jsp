@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<form action="vet_add_major_mod" method="get">
+<form action="vet_add_major_mod" method="post">
 <!-- 의사정보(Vets - VetsDao) 화면 노출 & 선택-->
 <select name="vet_id">
 	<c:forEach items="${vetslist}" var="dto1">

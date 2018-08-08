@@ -20,13 +20,12 @@
       </tr>
    <c:forEach items="${vetslist}" var="dto">
       <tr>
-         <td></td>
          <td>${dto.id }</td>
-         <td>${dto.first_name }, ${dto.last_name }</td>
+         <td>${dto.first_name}, ${dto.last_name}</td>
          <td>
          	<c:forEach items="${vetspeslist}" var="vsdto" varStatus="status">
          		<c:if test="${vsdto.vet_id == dto.id}"> 
-         		${status}. ${specialtieslist[vsdto.specialty_id-1].name}
+         		 ${specialtieslist[vsdto.specialty_id-1].name}
          		
          		</c:if>
          	</c:forEach>

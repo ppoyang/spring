@@ -44,8 +44,8 @@ public class VetsController {
 		VetspecialtiesDao vsdao = sqlSession.getMapper(VetspecialtiesDao.class);
 		SpecialtiesDao sdao = sqlSession.getMapper(SpecialtiesDao.class);
 		
-		model.addAttribute("vetlist", dao.vetslistDao());
-		model.addAttribute("vetspeclist", vsdao.vetspeslistDao());
+		model.addAttribute("vetslist", dao.vetslistDao());
+		model.addAttribute("vetspeslist", vsdao.vetspeslistDao());
 		model.addAttribute("specialtieslist", sdao.specialtiesDao());
 		
 		
