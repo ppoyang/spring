@@ -21,47 +21,47 @@ public class HomeController {
 		return "home";
 	}
 
-	@RequestMapping("/list")
+	@RequestMapping("freeboard/list")
 	public String list(Model model) {
 		IDao dao = sqlSession.getMapper(IDao.class);
 		model.addAttribute("list", dao.listDao());
-		return "/list";
+		return "board/list";
 	}
 	
-	@RequestMapping("/content_view")
+	@RequestMapping("freeboard/content_view")
 	public String content_view(HttpServletRequest request, Model model) { 
 		IDao dao = sqlSession.getMapper(IDao.class);
 		upHit(request.getParameter("bId"));
 		model.addAttribute("content_view", dao.viewDao(request.getParameter("bId")));
-		return "content_view";
+		return "board/content_view";
 	}
 
-	@RequestMapping("/write_view")
+	@RequestMapping("freeboard/write_view")
 	public String writeForm() {
-		return "/write_view";
+		return "board/write_view";
 	}
-	
-	@RequestMapping("/write")
+
+	@RequestMapping("freeboard/write")
 	public String write(HttpServletRequest request, Model model) {
 		IDao dao = sqlSession.getMapper(IDao.class);
 		dao.writeDao(request.getParameter("bName"), request.getParameter("bTitle"), request.getParameter("bContent"));
 		return "redirect:list";
 	}
 	
-	@RequestMapping("/view")
+	@RequestMapping("freeboard/view")
 	public String view() {
 		
-		return "/view";
+		return "board/view";
 	}
 	
-	@RequestMapping("/delete")
+	@RequestMapping("freeboard/delete")
 	public String delete(HttpServletRequest request, Model model) {
 		IDao dao = sqlSession.getMapper(IDao.class);
 		dao.deleteDao(request.getParameter("bId"));
 		return "redirect:list";
 	}
 	
-	@RequestMapping("/modify")
+	@RequestMapping("freeboard/modify")
 	public String modify(HttpServletRequest request, Model model) {
 		IDao dao = sqlSession.getMapper(IDao.class);
 		dao.modifyDao(request.getParameter("bName"), request.getParameter("bTitle"), 
@@ -69,7 +69,7 @@ public class HomeController {
 		return "redirect:list";
 	}
 	
-	@RequestMapping("/reply")
+	@RequestMapping("freeboard/reply")
 	public String reply(HttpServletRequest request, Model model) {
 		IDao dao = sqlSession.getMapper(IDao.class);
 		replyShape(request.getParameter("bGroup"), request.getParameter("bStep"));
@@ -83,11 +83,11 @@ public class HomeController {
 		return "redirect:list";
 	}
 	
-	@RequestMapping("/reply_view")
+	@RequestMapping("freeboard/reply_view")
 	public String reply_view(HttpServletRequest request, Model model) {
 		IDao dao = sqlSession.getMapper(IDao.class);
 		model.addAttribute("reply_view", dao.reply_viewDao(request.getParameter("bId")));		
-		return "reply_view";
+		return "board/reply_view";
 	}
 	
 	public void replyShape(String bGroup, String bStep) {

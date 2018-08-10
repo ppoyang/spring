@@ -26,6 +26,10 @@
 		INSERT INTO vets (id, first_name, last_name) VALUES (VETS_SEQ.NEXTVAL, #{param1}, #{param2})
 	</insert>
 	
+	 <delete id="vet_deleteDao">
+    DELETE FROM VETS WHERE ID = #{param1}
+  	</delete>
+	
 	
 	
 	

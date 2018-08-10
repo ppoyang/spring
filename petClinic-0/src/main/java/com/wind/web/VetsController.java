@@ -6,7 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,15 +27,19 @@ public class VetsController {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	@Autowired
+	  private DataSourceTransactionManager transactionManager;
+
 	
-	@RequestMapping("/vetslist")
+	
+	@RequestMapping("petclinic/vetslist")
 	public String vetslist(Model model) { 
 		VetsDao dao = sqlSession.getMapper(VetsDao.class);
 		model.addAttribute("vetslist", dao.vetslistDao());
-		return "vetslist";
+		return "petclinic/vetslist";
 	}
 	
-	@RequestMapping("/vetslistall")
+	@RequestMapping("petclinic/vetslistall")
 	public String vetslistall(Model model) { 
 		
 		// model :
@@ -50,17 +57,17 @@ public class VetsController {
 		
 		
 		
-		return "vetslistall";
+		return "petclinic/vetslistall";
 	}
 	
-	@RequestMapping("/vetselect_view")
+	@RequestMapping("petclinic/vetselect_view")
 	public String vetselect_view(Model model) { 
 		SpecialtiesDao dao = sqlSession.getMapper(SpecialtiesDao.class);
 		model.addAttribute("vetselect_view", dao.vetselect_viewDao());
-		return "vetselect_view";
+		return "petclinic/vetselect_view";
 	}
 	
-	@RequestMapping("/vetselect")
+	@RequestMapping("petclinic/vetselect")
 	public String vetselect(HttpServletRequest request, Model model) { 
 		VetsDao dao = sqlSession.getMapper(VetsDao.class);
 		//model.addAttribute("vetselect", dao.vetselectDao(Integer.parseInt(request.getParameter("specialty_id"))));		
@@ -73,30 +80,30 @@ public class VetsController {
 		}
 		model.addAttribute("vetselect2",dto2);
 		
-		return "vetselect";
+		return "petclinic/vetselect";
 	}
 	
-	@RequestMapping("/vetselect3")
+	@RequestMapping("petclinic/vetselect3")
 	public String vetselect3(HttpServletRequest request, Model model) { 
 		VetsDao dao = sqlSession.getMapper(VetsDao.class);
 		model.addAttribute("vetselect3",dao.vetselect3Dao(Integer.parseInt(request.getParameter("specialty_id"))));
 		
-		return "vetselect";
+		return "petclinic/vetselect";
 	}
 	
-	@RequestMapping("/vet_add_view")
+	@RequestMapping("petclinic/vet_add_view")
 	public String vet_add_view() {
-		return "vet_add_view";
+		return "petclinic/vet_add_view";
 	}
 	
-	@RequestMapping("/vet_add")
+	@RequestMapping("petclinic/vet_add")
 	public String vet_add(HttpServletRequest request) {
 		VetsDao dao = sqlSession.getMapper(VetsDao.class);
 		dao.vet_addDao(request.getParameter("first_name"),request.getParameter("last_name"));
 		return "redirect:vetslist";
 	}
 	
-	@RequestMapping("/vet_add_major")
+	@RequestMapping("petclinic/vet_add_major")
 	public String vet_add_major(Model model) {
 		VetsDao dao1 = sqlSession.getMapper(VetsDao.class);
 		SpecialtiesDao dao2 = sqlSession.getMapper(SpecialtiesDao.class);
@@ -104,23 +111,55 @@ public class VetsController {
 		model.addAttribute("vetslist", dao1.vetslistDao());
 		model.addAttribute("specialtieslist", dao2.specialtiesDao());
 		
-		return "vet_add_major";
+		return "petclinic/vet_add_major";
 	}
 	
-	@RequestMapping("/vet_add_major_mod")
+	@RequestMapping("petclinic/vet_add_major_mod")
 	public String vet_add_major_mod(HttpServletRequest request) {
 		
 		String vet_id = request.getParameter("vet_id");
 		String[] major = request.getParameterValues("major");
 		
-		del_vetspec(vet_id);
+		// Spring Transaction - Reference Ch.10.6
+				DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+//				def.setName("exam-tran");
+//				def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+				
+				TransactionStatus status = transactionManager.getTransaction(def);
+
+				try {
+					del_vetspec(vet_id);
+					for(int i=0;i<major.length;i++)  {
+						add_vetspec(vet_id, major[i]);
+					}
+				transactionManager.commit(status);
+
+				} catch (Exception e) {
+					transactionManager.rollback(status);
+					e.printStackTrace();
+				}
 		
-		for(int i=0; i<major.length; i++ ) {
-			add_vetspec(vet_id, major[i]);
-		}
 		
-		
-		return "redirect:vetslist";
+		return "redirect:vetslistall";
+	}
+	
+	@RequestMapping("petclinic/vet_delete")
+	public String vet_delete(HttpServletRequest request) {
+		String id = request.getParameter("id");
+
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		TransactionStatus status = transactionManager.getTransaction(def);
+		try {
+			del_vetspec(id);
+			del_vets(id);
+
+			transactionManager.commit(status);
+		} catch (Exception e) {
+			
+			transactionManager.rollback(status);
+			e.printStackTrace();
+		} 
+		return "redirect:vetslistall";
 	}
 	
 	@ExceptionHandler
@@ -134,6 +173,11 @@ public class VetsController {
 		//vetspec_deleteDao(vet_id) 생성
 		VetspecialtiesDao dao = sqlSession.getMapper(VetspecialtiesDao.class);
 		dao.vetspec_deleteDao(vet_id);
+	}
+	
+	public void del_vets(String id) {
+		VetsDao dao = sqlSession.getMapper(VetsDao.class);
+		dao.vet_deleteDao(id);
 	}
 	
 	public void add_vetspec(String vet_id, String specialty_id) {
